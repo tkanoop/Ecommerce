@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Index</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="css/all.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="css/slick.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+
+
+
+
+<%-include('include/_header')%>
+
+    <!-- Header part end-->
+
+
+    <!--================Home Banner Area =================-->
+    <!-- breadcrumb start-->
+    <section class="breadcrumb breadcrumb_bg">
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="col-lg-8">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Your Cart</h2>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  <!-- breadcrumb start-->
+
+  <!--================Cart Area =================-->
+  <section class="cart_area padding_top">
+    <div class="container">
+      <div class="cart_inner">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Action</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% cartlist.forEach(function(product){ %>
+
+                <tr>
+                  <td>
+                    <div class="media">
+                      <div class="d-flex">
+                        <img src="/products/<%=product.productDetail.image%>" alt="" width="100px" height="auto" />
+                      </div>
+                      <div class="media-body">
+                        <p>
+                          <%= product.productDetail.name %>
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <h5>
+                      ₹ <%= product.productDetail.price %>
+                    </h5>
+                  </td>
+                  <td>
+                    <div class="product_count d-flex align-items-center">
+                      <div class="d-flex">
+                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                          <% if(product.productQuantity==1) {%>
+                            <button class="btn btn-link px-2 disabled "
+                              onclick="changeQuantity('<%= product._id %>','<%= product.productDetail._id %>',-1)">
+                              <% } else { %>
+                                <button class="btn btn-link px-2  "
+                                  onclick="changeQuantity('<%= product._id %>','<%= product.productDetail._id %>',-1)">
+                                  <% } %>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+
+                                <input id="<%= product.productDetail._id %>" min="0" name="quantity"
+                                  value="<%= product.productQuantity %>" type="text"
+                                  class="form-control form-control-sm text-center" />
+
+                                <button class="btn btn-link px-2"
+                                  onclick="changeQuantity('<%= product._id %>','<%= product.productDetail._id %>',1)">
+                                  <i class="fas fa-plus"></i>
+                                </button>
+                        </div>
+                      </div>
+
+
+                  </td>
+                  <td>
+
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <button class="btn btn-outline-none"
+                        onclick="removeProduct('<%= product._id %>','<%= product.productDetail._id %>')">
+                        <i class="fas fa-trash fa-lg"></i>
+                    </div>
+
+
+
+
+
+                  </td>
+                  <td>
+                    <p>
+                      <%= product.productQuantity %> * <%= product.productDetail.price %>
+                    </p>
+                  </td>
+                  <% }) %>
+                </tr>
+        </div>
+        <!-- <tr class="bottom_button">
+                  <td>
+                    <a class="btn_1" href="#">Update Cart</a>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <div class="cupon_text float-right">
+                      <a class="btn_1" href="#">Close Coupon</a>
+                    </div>
+                  </td>
+                </tr> -->
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <h5>Subtotal</h5>
+          </td>
+          <td>
+            <h5>
+              <%=subtotal%>
+            </h5>
+          </td>
+        </tr>
+
+        </tbody>
+        </table>
+        <div class="checkout_btn_inner float-right">
+          <a class="btn_1" href="/">Continue Shopping</a>
+          <a class="btn_1 checkout_btn_1" href="/checkoutPage">Proceed to checkout</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!--================End Cart Area =================-->
+
+  <!--::footer_part start::-->
+  <%-include('include/_footer')%>
+  <!--::footer_part end::-->
+
+<!-- jquery plugins here-->
+<script src="/public/ajaxjs/ajax.js"></script>
+<script src="js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<!-- slick js -->
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/stellar.js"></script>
+<script src="js/price_rangs.js"></script>
+<!-- custom js -->
+<script src="js/custom.js"></script>
+</body>
+
+</html>
