@@ -106,6 +106,7 @@ const userSignin = async (req, res) => {
         } else {
             res.render('user/login', { wrong: "Invalid credentials" })
         }
+        
 
     } catch (error) {
         res.render('user/login', { wrong: "User not found" })
@@ -1102,6 +1103,8 @@ const getPay = async (req, res) => {
 }
 
 const getSuccess= async (req, res) => {
+    const name=req.session.userEmail;
+    sessionData=name.yourname
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
 
@@ -1126,7 +1129,7 @@ const getSuccess= async (req, res) => {
                 throw error;
             } else {
                 console.log(JSON.stringify(payment));
-                res.send("Success");
+                res.render('user/success',{sessionData})
             }
         }
     );

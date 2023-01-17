@@ -67,6 +67,10 @@ router.get('/success',sessionMV.verifyLoginUser,user.getSuccess)
 router.get('/cancel',sessionMV.verifyLoginUser,user.getCancel)
 
 router.post("/checkCoupon", sessionMV.verifyLoginUser, user.checkCoupon);
+
+// order success
+// router.get('/success',sessionMV.verifyLoginUser,user.su)
+
 module.exports = router;
 
 
