@@ -10,6 +10,7 @@ router.get('/',user.indexRoutes)
 router.get('/user/login',sessionMV.verifyLoginUserWithoutSession,user.userRoutes)
 router.post("/userhome",user.userSignin)
 router.get('/user_signup',user.userSignup)
+router.get('/error',user.error)
 
 // otp generation starts from here
 
@@ -27,7 +28,7 @@ router.post('/removeProduct',sessionMV.verifyLoginUser,user.deleteCart)
 
 // wishlist page starts from here
 router.get('/wishListPage',sessionMV.verifyLoginUser,user.wishListPage)
-router.get("/addToWishlist/:id",sessionMV.verifyLoginUser,user.addToWishList)
+router.get("/addtowishlist",sessionMV.verifyLoginUser,user.addToWishList)
 router.get("/removewishlistProduct",sessionMV.verifyLoginUser,user.deleteWishlist)
 
 
@@ -45,6 +46,7 @@ router.post('/addressAdded',sessionMV.verifyLoginUser,user.addressAdded)
 router.get('/deleteAddress',sessionMV.verifyLoginUser,user.deleteAddress)
 router.get('/orders',sessionMV.verifyLoginUser,user.viewOrder)
 router.get('/viewOrderProducts/:id',sessionMV.verifyLoginUser,user.viewOrderProduct)
+
 
 
 
@@ -69,7 +71,7 @@ router.get('/cancel',sessionMV.verifyLoginUser,user.getCancel)
 router.post("/checkCoupon", sessionMV.verifyLoginUser, user.checkCoupon);
 
 // order success
-// router.get('/success',sessionMV.verifyLoginUser,user.su)
+router.get("/orderSuccess", user.orderSuccess );
 
 module.exports = router;
 

@@ -66,6 +66,8 @@
                                 <th scope="col">Price</th>
 
                                 <th scope="col">Action</th>
+                                <th scope="col">Get To Cart</th>
+
 
                             </tr>
                         </thead>
@@ -76,27 +78,29 @@
                                     <td>
                                         <div class="media">
                                             <div class="d-flex">
-                                                <img src="/products/<%=product.image%>" alt="" width="200px"
+                                                <img src="/products/<%=product.wishlistdata.image%>" alt="" width="200px"
                                                     height="auto" />
                                             </div>
                                             <div class="media-body">
                                                 <p>
-                                                    <%=product.productname%>
+                                                    <%=product.wishlistdata.name%>
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <h5>
-                                            <%=product.price%>
+                                            <%=product.wishlistdata.price%>
                                         </h5>
                                     </td>
 
                                     </td>
-                                    <td><a href="/deleteWishlist?id=<%=product.productId%>"
+                                    <td><a href="/removewishlistProduct?id=<%=product.wishlistdata._id%>"
                                             class="btn btn-black btn-sm  "><i class="fa-solid fa-trash"></i></a></td>
+                                    
                                     <td>
-                                    <td>
+                                        <button id="cartButton" class="btn btn-dark btn-addtocart " style="width: 140px;" onclick="addToCart('<%=product.productId%>')"> Add to Cart</button>
+
 
                                     </td>
                                     <% }) %>
@@ -147,6 +151,8 @@
     <script src="js/price_rangs.js"></script>
     <!-- custom js -->
     <script src="js/custom.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="/public/ajaxjs/ajax.js"></script>
 </body>
 
 </html>

@@ -28,37 +28,79 @@ paypal.configure({
 
 // landing page
 
-
+let count;
+let wishlistcount;
 const indexRoutes = async (req, res) => {
     try {
         if (req.session.userEmail) {
 
             const userdata = await Register.findOne({ email: req.session.userEmail })
             userName = userdata.yourname
+            const cartData = await Cart.find({ userId: userdata._id });
+            console.log(cartData);
+
+
+            if (cartData.length) {
+                count = cartData[0].product.length;
+              console.log(count);
+            } else {
+                count = 0;
+            }
+            const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            if (wishlistData.length) {
+                wishlistcount = wishlistData[0].product.length;
+              console.log(wishlistcount);
+            } else {
+                wishlistcount = 0;
+            }
             const bannerData = await Banner.find({},)
+           
             Product.find({}, (err, userdetails) => {
                 if (err) {
                     console.log(err);
                 } else {
                     // console.log(userdetails)
-                    res.render('user/index', { details: userdetails, sessionData: userName, bannerData })
+                    res.render('user/index', { details: userdetails, sessionData: userName, bannerData,count,wishlistcount })
                     console.log();
                 }
             })
         } else {
             const bannerData = await Banner.find({},)
+            // const cartData = await Cart.find({ userId: userdata._id });
+            // console.log(cartData);
+
+
+            // if (cartData.length) {
+            //     count = cartData[0].product.length;
+            //   console.log(count);
+            // } else {
+            //     count = 0;
+            // }
+            // const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            // if (wishlistData.length) {
+            //     wishlistcount = wishlistData[0].product.length;
+            //   console.log(wishlistcount);
+            // } else {
+            //     wishlistcount = 0;
+            // }
             Product.find({}, (err, userdetails) => {
                 if (err) {
                     console.log(err);
                 } else {
                     // console.log(userdetails)
-                    res.render('user/index', { details: userdetails, sessionData: req.session.userEmail, bannerData })
+                    res.render('user/index', { details: userdetails, sessionData: req.session.userEmail, bannerData,count,wishlistcount })
                     console.log();
                 }
             })
         }
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error');
     }
 }
 
@@ -105,6 +147,9 @@ const userSignin = async (req, res) => {
 
         } else {
             res.render('user/login', { wrong: "Invalid credentials" })
+        
+        
+        
         }
         
 
@@ -113,6 +158,10 @@ const userSignin = async (req, res) => {
 
     }
 
+}
+
+const error=(req,res)=>{
+    res.render('user/error')
 }
 
 const userSignup = (req, res) => {
@@ -156,12 +205,12 @@ const otpVerification = async (req, res) => {
             console.log(userData.email)
             const user1 = new Register(userData)
             user1.save();
-            res.redirect('/login')
+            res.redirect('/user/login')
         } else {
             res.render('user/otp', { wrong: 'You have entered the wrong otp' })
         }
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        res.render('user/error')
     }
 }
 
@@ -175,6 +224,7 @@ const cartSession = async (req, res) => {
     const objId = mongoose.Types.ObjectId(id);
     const idUser = mongoose.Types.ObjectId(userData._id);
     console.log(objId);
+    
 
     let proObj = {
         productId: objId,
@@ -240,7 +290,16 @@ const cartPage = async (req, res) => {
         userName = userData.yourname
         const cartData = await Cart.find({ userId: userData._id });
 
+        const wishlistData = await Wishlist.find({ userId:userData._id });
+        
 
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
         if (cartData.length) {
             count = cartData[0].product.length;
         } else {
@@ -285,9 +344,9 @@ const cartPage = async (req, res) => {
 
         const subtotal = cartlist.reduce((accumulator, object) => accumulator + object.productPrice, 0);
 
-        res.render("user/cart", { cartlist, sessionData: userName, subtotal, });
+        res.render("user/cart", { cartlist, sessionData: userName, subtotal,wishlistcount,count });
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 }
 
@@ -331,37 +390,42 @@ const changeQuantity = async (req, res, next) => {
 
 
 const addToWishList = async (req, res) => {
-    if (req.session.userEmail) {
+    
         try {
-            const id = req.params.id
+            const id = req.query.id
             const userEmailId = req.session.userEmail
             const userdata = await Register.findOne({ email: userEmailId })
             const userId = userdata._id
+            const objId = mongoose.Types.ObjectId(id);
             const wishlistdata = await Wishlist.findOne({ userId })
+            let proObj = {
+                productId: objId,
+                quantity: 1,
+            };
             if (wishlistdata) {
                 const wishlistUpdate = await Wishlist.updateOne({ userId: userId },
                     {
-                        $push: { wishlistItems: { productId: id, qty: 1 } }
+                        $push:  { product:proObj } 
                     })
-                res.redirect('/wishlistPage')
+                    console.log("here");
+                res.redirect('/wishListPage')
             } else {
                 const wishlistOb = new Wishlist({
                     userId: userId,
-                    wishlistItems: [{
-                        productId: id,
+                    product: [{
+                        productId: objId,
+                        quantity:1,
 
                     }]
 
                 })
                 await wishlistOb.save();
-                res.redirect('/wishlistPage')
+                res.redirect('/wishListPage')
             }
         } catch (error) {
-            console.log(error.message);
+          res.render('user/error')
         }
-    } else {
-        res.redirect('/')
-    }
+   
 
 
 }
@@ -373,44 +437,58 @@ const wishListPage = async (req, res) => {
         const userdata = await Register.findOne({ email: userEmailId })
         const userId = userdata._id
         const userName = userdata.yourname
+        const cartData = await Cart.find({ userId: userdata._id });
+
+        const wishlistData = await Wishlist.find({ userId:userdata._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
+        if (cartData.length) {
+            count = cartData[0].product.length;
+        } else {
+            count = 0;
+        }
         const wishlistdetails = await Wishlist.aggregate([
             {
-                $match: { userId: new mongoose.Types.ObjectId(userId) },
+                $match: { userId: userId },
 
             },
             {
-                $unwind: '$wishlistItems'
+                $unwind: '$product'
             },
             {
                 $project: {
-                    productItems: '$wishlistItems.productId',
+                    productItem: '$product.productId',
                 }
             },
             {
                 $lookup: {
                     from: 'products',
-                    localField: 'productItems',
+                    localField: 'productItem',
                     foreignField: '_id',
                     as: "wishlistdata"
                 }
             },
             {
-                $unwind: '$wishlistdata'
-            },
-            {
                 $project: {
-                    productId: '$productItems',
-                    productname: '$wishlistdata.name',
-                    category: '$wishlistdata.category',
-                    image: '$wishlistdata.image',
-                    price: '$wishlistdata.price',
-                }
-            }
+                    productItem: 1,
+                    
+                    wishlistdata: { $arrayElemAt: ["$wishlistdata", 0] },
+                },
+            },
+           
         ])
 
-        res.render('user/wishlist', { wishlistdetails, sessionData: userName })
+        res.render('user/wishlist', { wishlistdetails, sessionData: userName,wishlistcount,count })
+        console.log(wishlistdetails);
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 
 }
@@ -423,12 +501,32 @@ const singleProduct = async (req, res) => {
             const id = req.query.id;
             userdata = await Register.findOne({ email: req.session.userEmail })
             userName = userdata.yourname
+            const cartData = await Cart.find({ userId: userdata._id });
+        console.log(cartData);
+
+
+        if (cartData.length) {
+            count = cartData[0].product.length;
+          console.log(count);
+        } else {
+            count = 0;
+        }
+        const wishlistData = await Wishlist.find({ userId: userdata._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
 
 
             const product = await Product.findById({ _id: id });
 
             if (product) {
-                res.render('user/singleProduct', { product, sessionData: userName });
+                res.render('user/singleProduct', { product, sessionData: userName,count,wishlistcount });
 
             }
         } else {
@@ -436,7 +534,7 @@ const singleProduct = async (req, res) => {
             const product = await Product.findById({ _id: id });
 
             if (product) {
-                res.render('user/singleProduct', { product, sessionData: req.body.userEmail });
+                res.render('user/singleProduct', { product, sessionData: req.body.userEmail,wishlistcount,count });
 
             }
 
@@ -446,7 +544,7 @@ const singleProduct = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 }
 
@@ -457,13 +555,33 @@ const userProfileView = async (req, res) => {
     try {
         const userData = await Register.findOne({ email: req.session.userEmail })
         userName = userData.yourname
+        const cartData = await Cart.find({ userId: userData._id });
+        console.log(cartData);
+
+
+        if (cartData.length) {
+            count = cartData[0].product.length;
+          console.log(count);
+        } else {
+            count = 0;
+        }
+        const wishlistData = await Wishlist.find({ userId: userData._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
         console.log(userName);
-        res.render('user/userProfile', { sessionData: userName, userData })
+        res.render('user/userProfile', { sessionData: userName, userData,count,wishlistcount })
 
     }
 
     catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 
 }
@@ -473,12 +591,33 @@ const editUserProfile = async (req, res) => {
         const userData = await Register.findOne({ email: req.session.userEmail })
         userName = userData.yourname
         console.log(userName);
-        res.render('user/editProfilePage', { sessionData: userName, userData })
+        const cartData = await Cart.find({ userId: userData._id });
+        console.log(cartData);
+
+
+        if (cartData.length) {
+            count = cartData[0].product.length;
+          console.log(count);
+        } else {
+            count = 0;
+        }
+        const wishlistData = await Wishlist.find({ userId: userData._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
+        console.log(userName);
+        res.render('user/editProfilePage', { sessionData: userName, userData,count,wishlistcount })
 
     }
 
     catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 
 }
@@ -497,7 +636,7 @@ const userProfileEdited = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 }
 
@@ -507,7 +646,7 @@ const userProfileEdited = async (req, res) => {
 
 
 const addressAdded = async (req, res) => {
-    if (req.session.userEmail) {
+   
         try {
             const uid = req.session.userEmail;
             const addressDetails = await new Address({
@@ -530,11 +669,9 @@ const addressAdded = async (req, res) => {
                 }
             });
         } catch (error) {
-            console.log(error.message);
+           res.render('user/error')
         }
-    } else {
-        res.redirect('/')
-    }
+   
 
 }
 
@@ -542,15 +679,35 @@ const addressPage = async (req, res) => {
     try {
         const userEmailId = req.session.userEmail;
         const userdata = await Register.findOne({ email: userEmailId })
+        const cartData = await Cart.find({ userId: userdata._id });
+        console.log(cartData);
+
+
+        if (cartData.length) {
+            count = cartData[0].product.length;
+          console.log(count);
+        } else {
+            count = 0;
+        }
+        const wishlistData = await Wishlist.find({ userId: userdata._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
 
         const userName = userdata.yourname
         Address.find({ user_id: req.session.userEmail }).then((addressdetails) => {
 
-            res.render('user/userAddress', { addressdetails, sessionData: userName })
+            res.render('user/userAddress', { addressdetails, sessionData: userName,wishlistcount,count })
 
         })
     } catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 
 }
@@ -560,12 +717,29 @@ const addAddressPage = async (req, res) => {
         const userData = await Register.findOne({ email: req.session.userEmail })
         userName = userData.yourname
         console.log(userName);
-        res.render('user/addAddressPage', { sessionData: userName })
+        const cartData = await Cart.find({ userId: userData._id });
+
+        const wishlistData = await Wishlist.find({ userId:userData._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
+        if (cartData.length) {
+            count = cartData[0].product.length;
+        } else {
+            count = 0;
+        }
+        res.render('user/addAddressPage', { sessionData: userName ,count,wishlistcount})
 
     }
 
     catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 
 }
@@ -641,7 +815,7 @@ const viewOrderProduct = async (req, res) => {
                         sessionData,
                         count,
                         productData,
-                        wishCount,
+                        wishlistcount,
                         address
                     });
                 })
@@ -649,7 +823,7 @@ const viewOrderProduct = async (req, res) => {
             });
     } catch {
         console.error();
-        res.render("user/error500");
+        res.render("user/error");
     }
 }
 
@@ -665,9 +839,9 @@ const viewOrder =
             const cartData = await Cart.findOne({ userId: userData._id })
             let count = cartData?.product?.length;
             const wishlistData = await Wishlist.findOne({ userId: userData._id });
-            let wishCount = wishlistData?.product?.length;
+            let wishlistcount = wishlistData?.product?.length;
             if (wishlistData == null) {
-                wishCount = 0;
+                wishlistcount = 0;
             }
             if (cartData == null) {
                 count = 0;
@@ -679,13 +853,13 @@ const viewOrder =
                     res.render("user/order", {
                         sessionData,
                         count,
-                        wishCount,
+                        wishlistcount,
                         orderDetails,
 
                     });
                 });
         } catch (error) {
-            console.log(error);
+           res.render('user/error')
         }
     }
 
@@ -706,11 +880,31 @@ const category4k = async (req, res) => {
             userName = userdata.yourname
             const categoryData = await Product.find({ category: "4K TV'S" })
             console.log(categoryData);
-            res.render('user/categories', { details: categoryData, sessionData: userName })
+            const cartData = await Cart.find({ userId: userdata._id });
+            console.log(cartData);
+
+
+            if (cartData.length) {
+                count = cartData[0].product.length;
+              console.log(count);
+            } else {
+                count = 0;
+            }
+            const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            if (wishlistData.length) {
+                wishlistcount = wishlistData[0].product.length;
+              console.log(wishlistcount);
+            } else {
+                wishlistcount = 0;
+            }
+            res.render('user/categories', { details: categoryData, sessionData: userName,wishlistcount,count})
         } else {
             const categoryData = await Product.find({ category: "4K TV'S" })
             console.log(categoryData);
-            res.render('user/categories', { details: categoryData, sessionData: req.session.userEmail })
+            res.render('user/categories', { details: categoryData, sessionData: req.session.userEmail,wishlistcount,count })
         }
 
 
@@ -720,7 +914,7 @@ const category4k = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 
 
@@ -735,8 +929,28 @@ const categoryQled = async (req, res) => {
             const userdata = await Register.findOne({ email: req.session.userEmail })
             userName = userdata.yourname
             const categoryData = await Product.find({ category: "QLED TV'S" })
+            const cartData = await Cart.find({ userId: userdata._id });
+            console.log(cartData);
+
+
+            if (cartData.length) {
+                count = cartData[0].product.length;
+              console.log(count);
+            } else {
+                count = 0;
+            }
+            const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            if (wishlistData.length) {
+                wishlistcount = wishlistData[0].product.length;
+              console.log(wishlistcount);
+            } else {
+                wishlistcount = 0;
+            }
             console.log(categoryData);
-            res.render('user/categories', { details: categoryData, sessionData: userName })
+            res.render('user/categories', { details: categoryData, sessionData: userName,wishlistcount,count })
         } else {
             const categoryData = await Product.find({ category: "QLED TV'S" })
             console.log(categoryData);
@@ -750,7 +964,7 @@ const categoryQled = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 
 
@@ -765,8 +979,28 @@ const categoryOled = async (req, res) => {
             const userdata = await Register.findOne({ email: req.session.userEmail })
             userName = userdata.yourname
             const categoryData = await Product.find({ category: "OLED TV'S" })
+            const cartData = await Cart.find({ userId: userdata._id });
+            console.log(cartData);
+
+
+            if (cartData.length) {
+                count = cartData[0].product.length;
+              console.log(count);
+            } else {
+                count = 0;
+            }
+            const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            if (wishlistData.length) {
+                wishlistcount = wishlistData[0].product.length;
+              console.log(wishlistcount);
+            } else {
+                wishlistcount = 0;
+            }
             console.log(categoryData);
-            res.render('user/categories', { details: categoryData, sessionData: userName })
+            res.render('user/categories', { details: categoryData, sessionData: userName,wishlistcount,count })
         } else {
             const categoryData = await Product.find({ category: "OLED TV'S" })
             console.log(categoryData);
@@ -780,7 +1014,7 @@ const categoryOled = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 
 
@@ -796,7 +1030,27 @@ const categoryLed = async (req, res) => {
             userName = userdata.yourname
             const categoryData = await Product.find({ category: "LED TV'S" })
             console.log(categoryData);
-            res.render('user/categories', { details: categoryData, sessionData: userName })
+            const cartData = await Cart.find({ userId: userdata._id });
+            console.log(cartData);
+
+
+            if (cartData.length) {
+                count = cartData[0].product.length;
+              console.log(count);
+            } else {
+                count = 0;
+            }
+            const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            if (wishlistData.length) {
+                wishlistcount = wishlistData[0].product.length;
+              console.log(wishlistcount);
+            } else {
+                wishlistcount = 0;
+            }
+            res.render('user/categories', { details: categoryData, sessionData: userName,wishlistcount,count })
         } else {
             const categoryData = await Product.find({ category: "LED TV'S" })
             console.log(categoryData);
@@ -810,7 +1064,7 @@ const categoryLed = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 
 }
@@ -824,9 +1078,29 @@ const search = async (req, res) => {
             userName = userdata.yourname
             searchData = req.body.search
             console.log(req.body.search);
-            const categoryData = await Product.find({ name: req.body.search })
+            const categoryData = await Product.find({ name: searchData })
+            const cartData = await Cart.find({ userId: userdata._id });
+            console.log(cartData);
+
+
+            if (cartData.length) {
+                count = cartData[0].product.length;
+              console.log(count);
+            } else {
+                count = 0;
+            }
+            const wishlistData = await Wishlist.find({ userId: userdata._id });
+            
+
+
+            if (wishlistData.length) {
+                wishlistcount = wishlistData[0].product.length;
+              console.log(wishlistcount);
+            } else {
+                wishlistcount = 0;
+            }
             console.log(categoryData);
-            res.render('user/categories', { details: categoryData, sessionData: userName })
+            res.render('user/categories', { details: categoryData, sessionData: userName ,wishlistcount,count})
         } else {
             const categoryData = await Product.find({ name: req.body.search })
             console.log(categoryData);
@@ -834,7 +1108,7 @@ const search = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 }
 
@@ -857,20 +1131,22 @@ const deleteCart = async (req, res) => {
 
 const deleteWishlist = async (req, res) => {
     try {
-        const prodId = req.query.id;
-        console.log(prodId);
-        console.log(req.session.userEmail);
-        const userdata = await Register.findOne({ email: req.session.userEmail })
-        const Id = userdata._id
-        const userName = userdata.yourname
-        const userId = mongoose.Types.ObjectId(Id);
-
+        const id = req.query.id
+            const userEmailId = req.session.userEmail
+            const userdata = await Register.findOne({ email: userEmailId })
+            const userId = userdata._id
+            const objId = mongoose.Types.ObjectId(id);
+           
+            let proObj = {
+                productId: objId,
+                
+            };
 
         const cartData = await Wishlist
             .updateOne(
                 { userId: userId },
                 {
-                    $pull: { wishlistItems: { productId: prodId } },
+                    $pull:  { product:proObj} ,
                 }
             )
             .then(() => {
@@ -879,7 +1155,7 @@ const deleteWishlist = async (req, res) => {
 
         // console.log(cartData);
     } catch (error) {
-        console.log(error.message);
+       res.render('user/error')
     }
 };
 
@@ -888,6 +1164,26 @@ const checkoutPage = async (req, res) => {
         const userId = req.session.userEmail;
         const userData = await Register.findOne({ email: userId });
         const userName = userData.yourname
+        const cartData = await Cart.find({ userId: userData._id });
+        console.log(cartData);
+
+
+        if (cartData.length) {
+            count = cartData[0].product.length;
+          console.log(count);
+        } else {
+            count = 0;
+        }
+        const wishlistData = await Wishlist.find({ userId: userData._id });
+        
+
+
+        if (wishlistData.length) {
+            wishlistcount = wishlistData[0].product.length;
+          console.log(wishlistcount);
+        } else {
+            wishlistcount = 0;
+        }
         const cartlist = await Cart.aggregate([
             {
                 $match: { userId: userData._id },
@@ -927,10 +1223,10 @@ const checkoutPage = async (req, res) => {
         ]);
         const sum = cartlist.reduce((accumulator, object) => accumulator + object.productPrice, 0);
         Address.find({ user_id: userId }).then((addressdetails) => {
-            res.render('user/checkout', { cartlist, sessionData: userName, sum, addressdetails });
+            res.render('user/checkout', { cartlist, sessionData: userName, sum, addressdetails ,count,wishlistcount});
         })
     } catch (error) {
-        console.log(error);
+       res.render('user/error')
     }
 
 
@@ -959,11 +1255,11 @@ const deleteAddress = async (req, res) => {
 
         console.log(cartData);
     } catch (error) {
-        console.log(error.message);
+        res.render('user/error')
     }
 };
 
-
+let amount;
 const postCheckout = async (req, res) => {
     try {
         const sessionData = req.session.userEmail
@@ -1042,7 +1338,9 @@ const postCheckout = async (req, res) => {
                         if (payment === 'cod') {
                             res.json({ successCod: true });
                         } else if (payment === 'online') {
-                            // const amount = done.totalAmount * 100;
+                            amount=Math.round(done.finalAmount/84);
+                            console.log(amount);
+                            
                             res.json({ successPay: true })
                         }
                     });
@@ -1054,11 +1352,23 @@ const postCheckout = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error);
+       res.render('user/error')
     }
 }
 
+
+
 const getPay = async (req, res) => {
+
+    const name=req.session.userEmail;
+
+   
+    id=name._id
+    console.log(id);
+    const orderData=await Orders.findOne({user_id:id})
+    orderdetails=orderData
+    console.log(orderdetails);
+
     const create_payment_json = {
         intent: "sale",
         payer: {
@@ -1075,7 +1385,7 @@ const getPay = async (req, res) => {
                         {
                             name: "Red Sox Hat",
                             sku: "001",
-                            price: "25.00",
+                            price: amount,
                             currency: "USD",
                             quantity: 1,
                         },
@@ -1083,7 +1393,7 @@ const getPay = async (req, res) => {
                 },
                 amount: {
                     currency: "USD",
-                    total: "25.00",
+                    total: amount,
                 },
                 description: "Hat for the best team ever",
             },
@@ -1104,17 +1414,21 @@ const getPay = async (req, res) => {
 
 const getSuccess= async (req, res) => {
     const name=req.session.userEmail;
+
     sessionData=name.yourname
+    id=name.id
+    console.log(id);
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
-
+    // getting order details
+   
     const execute_payment_json = {
         payer_id: payerId,
         transactions: [
             {
                 amount: {
                     currency: "USD",
-                    total: "25.00",
+                    total: amount,
                 },
             },
         ],
@@ -1191,12 +1505,17 @@ const checkCoupon = async (req, res) => {
         res.json({ exist: true });
     }
 }
+const orderSuccess= async (req, res) => {
+    
+    res.render("user/success" );
 
+}
 
 
 
 module.exports = {
     indexRoutes,
+    error,
     userRoutes,
     userRegister,
     userSignup,
@@ -1230,7 +1549,8 @@ module.exports = {
     viewOrderProduct,
     getPay,
     getCancel,
-    getSuccess
+    getSuccess,
+    orderSuccess
 
 
 

@@ -49,6 +49,9 @@ app.use((req, res, next) => {
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+app.use('*',(req,res)=>{
+  res.redirect('/error')
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
