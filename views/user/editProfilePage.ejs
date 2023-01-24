@@ -5,35 +5,30 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>aranoz</title>
-    <link rel="icon" href="/public/img/favicon.png">
+    <title>Index</title>
+    
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- animate CSS -->
-    <link rel="stylesheet" href="/public/css/animate.css">
+    <link rel="stylesheet" href="css/animate.css">
     <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="/public/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/public/css/all.css">
+    <link rel="stylesheet" href="css/all.css">
     <!-- flaticon CSS -->
-    <link rel="stylesheet" href="/public/css/flaticon.css">
-    <link rel="stylesheet" href="/public/css/themify-icons.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/public/css/magnific-popup.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
     <!-- swiper CSS -->
-    <link rel="stylesheet" href="/public/css/slick.css">
+    <link rel="stylesheet" href="css/slick.css">
     <!-- style CSS -->
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="/public/css/userprofile.css">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
 
-<body>
-    <!--::header part start::-->
-    <%-include('include/_header')%>
+<%-include('include/_header')%>
 
     <!-- Header part end-->
     <section class="breadcrumb breadcrumb_bg">
@@ -42,7 +37,7 @@
                 <div class="col-lg-8">
                     <div class="breadcrumb_iner">
                         <div class="breadcrumb_iner_item">
-                            <h2>User Profile</h2>
+                            <h2>User Address</h2>
 
                         </div>
                     </div>
@@ -54,47 +49,46 @@
 
 
     <div class="container emp-profile ">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+          
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
 
-        <div class="row">
-            <div class="col-md-4">
+                    </div>
+                </div>
 
             </div>
-            <div class="col-md-6">
-                <div class="profile-head">
+            <div class="row">
+               
+                <div class="col-md-3">
+                    <div class="profile-work">
+                       
+                        <a href="/userProfile">Details</a><br /><br/>
+                        <a href="/address">Address</a><br /><br />
+                        <a href="/orders">Orders</a><br /><br />
+
 
                 </div>
             </div>
 
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="profile-work">
-
-                    <a href="">Details</a><br /><br />
-                    <a href="">Address</a><br /><br />
-                    <a href="">Orders</a><br /><br />
-            
-
-
+            <div class="container col-md-6 ms-sm-auto col-lg- px-md-" >
+                <div class="message d-flex justify-content-center">
+                <% if(locals.check){%>
+                    <p class="text-danger"><%=check%></p>
+                    <%}%>
                 </div>
-            </div>
-
-            <div class="container col-md-9 ms-sm-auto col-lg- px-md-">
                 
                     
                         <div class="card cascading-right"
                             style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); ">
                             <div class="card-body   text-center">
                                 <h2 class="fw-bold ">Edit Details</h2>
-                                <form action="" method="post" enctype="multipart/form-data">
+                                <form action="/newPassword" method="post" >
 
-                                    <div class="form-outline mt-3">
-                                        <label class="form-label" for="form3Example1">
-                                            Name</label><br>
-                                        <input type="text" id="form3Example1" name="name" value="<%=userData.yourname%>"
-                                            class="form-control" />
-
-                                    </div>
+                                   
                                     <div class="form-outline mt-3">
                                         <label class="form-label" for="form3Example1">
                                             Current Password</label><br>
@@ -106,7 +100,7 @@
                                     <div class="form-outline mt-3">
                                         <label class="form-label" for="form3Example1">
                                             New password</label><br>
-                                        <input type="text" id="form3Example1" name="password" value=""
+                                        <input type="text" id="form3Example1" name="newPassword" value=""
                                             class="form-control" />
 
                                     </div>
@@ -114,17 +108,13 @@
                                     <div class="form-outline mt-3">
                                         <label class="form-label" for="form3Example1">
                                             Confirm New Password</label><br>
-                                        <input type="text" id="form3Example1" name="cpassword" value=""
+                                        <input type="text" id="form3Example1" name="repeatPassword" value=""
                                             class="form-control"  />
 
                                     </div>
 
 
-                                    <p> <%=locals.check %></p>
-
-
-
-
+                                
                                   
 
                                     <!-- Submit button -->

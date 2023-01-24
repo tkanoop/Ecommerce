@@ -5,123 +5,174 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>aranoz</title>
-    <link rel="icon" href="/public/img/favicon.png">
+    <title>Index</title>
+    
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <!-- animate CSS -->
-    <link rel="stylesheet" href="/public/css/animate.css">
+    <link rel="stylesheet" href="css/animate.css">
     <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="/public/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/public/css/all.css">
+    <link rel="stylesheet" href="css/all.css">
     <!-- flaticon CSS -->
-    <link rel="stylesheet" href="/public/css/flaticon.css">
-    <link rel="stylesheet" href="/public/css/themify-icons.css">
+    <link rel="stylesheet" href="css/flaticon.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
     <!-- font awesome CSS -->
-    <link rel="stylesheet" href="/public/css/magnific-popup.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
     <!-- swiper CSS -->
-    <link rel="stylesheet" href="/public/css/slick.css">
+    <link rel="stylesheet" href="css/slick.css">
     <!-- style CSS -->
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="/public/css/userprofile.css">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
 
 <%-include('include/_header')%>
 
     <!-- Header part end-->
+    <section class="breadcrumb breadcrumb_bg">
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="col-lg-8">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>User Address</h2>
 
-
-
-    <div class="container emp-profile ">
-
-        <div class="row">
-            <div class="col-md-4">
-
-            </div>
-            <div class="col-md-6">
-                <div class="profile-head">
-
-                </div>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="profile-work">
-
-                    <a href="">Details</a><br /><br />
-                    <a href="">Address</a><br /><br />
-                    <a href="">Orders</a><br /><br />
-
-
-
-                </div>
-            </div>
-
-            <div class="container col-md-9 ms-sm-auto col-lg- px-md-">
-
-
-                <div class="card cascading-right"
-                    style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); ">
-                    <div class="card-body   text-center">
-                        <h2 class="fw-bold ">Edit Details</h2>
-                        <form action="" method="post" enctype="multipart/form-data">
-
-                            <div class="form-outline mt-3">
-                                <label class="form-label" for="form3Example1">
-                                    Address Type</label><br>
-                                <input type="text" id="form3Example1" name="addressType"
-                                    value="<%=userData.addressType%>" class="form-control" />
-
-                            </div>
-                            <div class="form-outline mt-3">
-                                <label class="form-label" for="form3Example1">
-                                    Address Line 1</label><br>
-                                <input type="text" id="form3Example1" name="addressLine1" value=""
-                                    class="form-control" />
-
-                            </div>
-
-                            <div class="form-outline mt-3">
-                                <label class="form-label" for="form3Example1">
-                                    Address Line 2</label><br>
-                                <input type="text" id="form3Example1" name="addressLine2" value=""
-                                    class="form-control" />
-
-                            </div>
-
-                            <div class="form-outline mt-3">
-                                <label class="form-label" for="form3Example1">
-                                    Pincode</label><br>
-                                <input type="text" id="form3Example1" name="pincode" value="" class="form-control" />
-
-                            </div>
-
-
-
-
-
-
-
-
-
-                            <!-- Submit button -->
-                            <div class="form-outline mt-3 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary btn-block mb-4 " style="width: 100px;">
-                                    Submit
-                                </button>
-                            </div>
-
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+
+
+    <div class="container emp-profile ">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+          
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+               
+                <div class="col-md-3">
+                    <div class="profile-work">
+                       
+                        <a href="/userProfile">Details</a><br /><br/>
+                        <a href="/address">Address</a><br /><br />
+                        <a href="/orders">Orders</a><br /><br />
+
+
+            </div>
+        </div>
+
+        <div class="container col-md-6 ms-sm-auto col-lg- px-md-">
+
+
+            <div class="card cascading-right"
+                style="background: hsla(0, 0%, 100%, 0.55); backdrop-filter: blur(30px); ">
+                <div class="card-body   text-center">
+                    <h2 class="fw-bold ">Edit Address</h2>
+                    <form action="/" method="post" enctype="multipart/form-data">
+
+                        <div class="form-outline mt-3">
+                            <label class="form-label" for="form3Example1">
+                               Address</label><br>
+                            <input type="text" id="form3Example1" name="address" value="<%=addressdata.address%>"
+                                class="form-control" />
+
+                        </div>
+
+                        <div class="form-outline mt-3">
+                            <label class="form-label" for="form3Example1">
+                                City</label><br>
+                            <input type="text" id="form3Example1" name="city" value="<%=addressdata.city%>"
+                                class="form-control"  />
+
+                        </div>
+
+                        <div class="form-outline mt-3">
+                            <label class="form-label" for="form3Example1">
+                                District</label><br>
+                            <input type="text" id="form3Example1" name="district" value="<%=addressdata.district%>"
+                                class="form-control"  />
+
+                        </div>
+
+                        <div class="form-outline mt-3">
+                            <label class="form-label" for="form3Example1">
+                                State</label><br>
+                            <input type="text" id="form3Example1" name="state" value="<%=addressdata.state%>"
+                                class="form-control"  />
+
+                        </div>
+
+                        <div class="form-outline mt-3">
+                            <label class="form-label" for="form3Example1">
+                                Pincode</label><br>
+                            <input type="text" id="form3Example1" name="pincode" value="<%=addressdata.pincode%>"
+                                class="form-control"  />
+
+                        </div>
+
+
+
+
+
+
+
+
+
+                        <!-- Submit button -->
+                        <div class="form-outline mt-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-block mb-4 " style="width: 100px;">
+                                Submit
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<%-include('include/_footer')%>
+  <!--::footer_part end::-->
 
+    <!-- jquery plugins here-->
+    <script src="/public/js/jquery-1.12.1.min.js"></script>
+    <!-- popper js -->
+    <script src="/public/js/popper.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="/public/js/bootstrap.min.js"></script>
+    <!-- easing js -->
+    <script src="/public/js/jquery.magnific-popup.js"></script>
+    <!-- swiper js -->
+    <script src="/public/js/swiper.min.js"></script>
+    <!-- swiper js -->
+    <script src="/public/js/masonry.pkgd.js"></script>
+    <!-- particles js -->
+    <script src="/public/js/owl.carousel.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <!-- slick js -->
+    <script src="/public/js/slick.min.js"></script>
+    <script src="/public/js/jquery.counterup.min.js"></script>
+    <script src="/public/js/waypoints.min.js"></script>
+    <script src="/public/js/contact.js"></script>
+    <script src="/public/js/jquery.ajaxchimp.min.js"></script>
+    <script src="/public/js/jquery.form.js"></script>
+    <script src="/public/js/jquery.validate.min.js"></script>
+    <script src="/public/js/mail-script.js"></script>
+    <!-- custom js -->
+    <script src="/public/js/custom.js"></script>
+</body>
 
+</html>

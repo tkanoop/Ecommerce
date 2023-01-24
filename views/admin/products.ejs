@@ -48,7 +48,7 @@
                         </div>
                     </section>
                     <section class="mt-2 ">
-                        <table id="example" class="table mt-5 table-hover table-light">
+                        <table id="example" class="table mt-5 table table-hover table-light text-start align-middle table-bordered" >
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -83,7 +83,7 @@
                                         <td>
                                             <a class="addproduct " href="/admin/editProduct?id=<%=product._id%>"
                                                 style="text-decoration: none;">
-                                                <button type="button" class="btn btn-primary "
+                                                <button type="button" class="btn-sm btn-primary "
                                                     style="width: 90px; height: auto; text-decoration: none;">Edit</button>
                                                 <% if(product.status==true) {%>
                                             </a>
@@ -91,14 +91,14 @@
 
                                             <a class="addproduct " href="/admin/statusProduct?id=<%= product._id%>"
                                                 style="text-decoration: none;">
-                                                <button type="button" class="btn btn-danger "onclick="confirm ()"
+                                                <button type="button" class="btn-sm btn-danger "onclick="confirm ()"
                                                     style="width: 90px; height: auto; text-decoration: none;">Unlist</button>
                                             </a>
                                             <%}else{%>
                                                 <a class="addproduct mt-2"
                                                     href="/admin/statusProduct?id=<%= product._id%>"
                                                     style="text-decoration: none">
-                                                    <button type="button" class="btn btn-success"onclick="return confirm('Are you sure you want to List ')"
+                                                    <button type="button" class="btn-sm btn-success"onclick="return confirm('Are you sure you want to List ')"
                                                         style="width: 90px; height: auto; text-decoration: none;">List</button>
 
 

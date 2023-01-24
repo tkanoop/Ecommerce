@@ -11,53 +11,53 @@ const product=require('../configure/multerProd')
 
 
 router.get('/',sessionMV.verifyLoginAdminWithoutSession,admin.adminLoginRoutes)
-router.get('/adminhome', admin.loadUser)
+router.get('/adminhome',sessionMV.verifyLoginAdmin, admin.loadUser)
 router.post('/dashboard',admin.adminDashboard)
-router.get('/dashboard',admin.adminDashboardData)
-router.get('/updateUser', admin.updateUser);
+router.get('/dashboard',sessionMV.verifyLoginAdmin,admin.adminDashboardData)
+router.get('/updateUser',sessionMV.verifyLoginAdmin, admin.updateUser);
 router.get('/logout',sessionMV.verifyLoginAdmin,admin.logoutRouter)
 
 // category management starts from here
-router.get('/addCategory',admin.getAddCategory)
-router.get('/category',admin.getCategory)
-router.post('/addCategory', upload.single('image'), admin.insertCategory);
-router.get('/updateCategory',admin.updateCategory)
-router.get('/editCategoryForm',admin.editCategoryPage)
-router.post('/editCategoryForm', upload.single('image'), admin.editCategory1);
+router.get('/addCategory',sessionMV.verifyLoginAdmin,admin.getAddCategory)
+router.get('/category',sessionMV.verifyLoginAdmin,admin.getCategory)
+router.post('/addCategory',sessionMV.verifyLoginAdmin, upload.single('image'), admin.insertCategory);
+router.patch('/order_update',sessionMV.verifyLoginAdmin,admin.updateCategory)
+router.get('/editCategoryForm',sessionMV.verifyLoginAdmin,admin.editCategoryPage)
+router.post('/editCategoryForm',sessionMV.verifyLoginAdmin, upload.single('image'), admin.editCategory1);
 
 // product management starts from here
 
-router.get('/products',admin.productPage)
-router.get('/addProductPage',admin.addProduct)
-router.post('/add-product',product.single('image'),admin.productAdded)
-router.get('/statusProduct',admin.statusProduct)
-router.get('/editProduct', admin.editProduct)
-router.post('/editProduct', product.single('image'), admin.updateProduct);
+router.get('/products',sessionMV.verifyLoginAdmin,admin.productPage)
+router.get('/addProductPage',sessionMV.verifyLoginAdmin,admin.addProduct)
+router.post('/add-product',sessionMV.verifyLoginAdmin,product.single('image'),admin.productAdded)
+router.get('/statusProduct',sessionMV.verifyLoginAdmin,admin.statusProduct)
+router.get('/editProduct',sessionMV.verifyLoginAdmin, admin.editProduct)
+router.post('/editProduct',sessionMV.verifyLoginAdmin, product.single('image'), admin.updateProduct);
 
 // banne management starts from here
-router.get('/banners',admin.bannerPage)
-router.get('/addBanner',admin.addBanner)
-router.post('/addBanner',upload.single('image'),admin.bannerAdded)
-router.get('/editBannerForm',admin.editBannerForm)
-router.post('/editBannerForm',upload.single('image'),admin.editedBannerForm)
-router.get('/updateBanner',admin.updateSingleBanner)
+router.get('/banners',sessionMV.verifyLoginAdmin,admin.bannerPage)
+router.get('/addBanner',sessionMV.verifyLoginAdmin,admin.addBanner)
+router.post('/addBanner',sessionMV.verifyLoginAdmin,upload.single('image'),admin.bannerAdded)
+router.get('/editBannerForm',sessionMV.verifyLoginAdmin,admin.editBannerForm)
+router.post('/editBannerForm',sessionMV.verifyLoginAdmin,upload.single('image'),admin.editedBannerForm)
+router.get('/delete',sessionMV.verifyLoginAdmin,admin.updateSingleBanner)
 
 
 // coupen management starts from here
 
-router.get("/coupons", admin.getCoupons);
-router.post("/addCoupon", admin.addCoupon);
-router.post( "/editCoupon/:id",   admin.editCoupon );
+router.get("/coupons",sessionMV.verifyLoginAdmin, admin.getCoupons);
+router.post("/addCoupon",sessionMV.verifyLoginAdmin, admin.addCoupon);
+router.post( "/editCoupon/:id",sessionMV.verifyLoginAdmin,   admin.editCoupon );
   
   //delete coupon 
-  router.get('/deleteCoupon/:id',admin.deleteCoupon);
+  router.get('/deleteCoupon/:id',sessionMV.verifyLoginAdmin,admin.deleteCoupon);
 
   
   // order page loading
-  router.get('/orders', admin .getOrders);
-  router.post('/changeStatus',admin.changeOrderStatus);
-  router.post('/orderCompleted',admin.orderCompeleted);
-  router.post('/orderCancel',admin.orderCancel);
+  router.get('/orders',sessionMV.verifyLoginAdmin, admin .getOrders);
+  router.post('/changeStatus',sessionMV.verifyLoginAdmin,admin.changeOrderStatus);
+  router.post('/orderCompleted',sessionMV.verifyLoginAdmin,admin.orderCompeleted);
+  router.post('/orderCancel',sessionMV.verifyLoginAdmin,admin.orderCancel);
 
-  router.get('/salesReport',admin.getSalesReport);
+  router.get('/salesReport',sessionMV.verifyLoginAdmin,admin.getSalesReport);
 module.exports = router;

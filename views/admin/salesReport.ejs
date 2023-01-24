@@ -43,21 +43,21 @@
                     <table class="table table-bordered align-middle" id="today-table">
                       <thead>
                         <tr class="text-center">
-                          <th scope="col">Order Id</th>
-                          <th scope="col">Customer</th>
-                          <th scope="col">Amount</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Order Status</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Order Id</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Customer</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Amount</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Status</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Order Status</th>
                         </tr>
                       </thead>
                       <tbody class="text-center">
                         <% today.forEach(element => { %>
                         <tr>
-                          <td><%= element.order_id %></td>
-                          <td><%= element.user.yourname %></td>
-                          <td><%= element.finalAmount %></td>
-                          <td><%= element.paymentStatus %></td>
-                          <td><%= element.orderStatus %></td>
+                          <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.order_id %></td>
+                        <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.user.yourname %></td>
+                        <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.finalAmount %></td>
+                        <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.paymentStatus %></td>
+                      <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.orderStatus %></td>
                         </tr>
                         <% }) %>
                       </tbody>
@@ -88,22 +88,22 @@
                   <div class="table-responsive">
                     <table class="table table-bordered align-middle" id="month-table">
                       <thead>
-                        <tr class="text-center">
-                          <th scope="col">Order Id</th>
-                          <th scope="col">Customer</th>
-                          <th scope="col">Amount</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Order Status</th>
+                      <tr class="text-center">
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Order Id</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Customer</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Amount</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Status</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Order Status</th>
                         </tr>
                       </thead>
                       <tbody class="text-center">
                         <% month.forEach(element => { %>
-                        <tr>
-                          <td><%= element.order_id %></td>
-                          <td><%= element.user.yourname %></td>
-                          <td><%= element.finalAmount %></td>
-                          <td><%= element.paymentStatus %></td>
-                          <td><%= element.orderStatus %></td>
+                       <tr>
+                          <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.order_id %></td>
+                        <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.user.yourname %></td>
+                        <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.finalAmount %></td>
+                        <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.paymentStatus %></td>
+                      <td class="col-3 col-md-3 col-lg-3 col-xl-1 text-center"><%= element.orderStatus %></td>
                         </tr>
                         <% }) %>
                       </tbody>
@@ -134,12 +134,12 @@
                   <div class="table-responsive">
                     <table class="table table-bordered align-middle" id="year-table">
                       <thead>
-                        <tr class="text-center">
-                          <th scope="col">Order Id</th>
-                          <th scope="col">Customer</th>
-                          <th scope="col">Amount</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Order Status</th>
+                         <tr class="text-center">
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Order Id</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Customer</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Amount</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Status</th>
+                          <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">Order Status</th>
                         </tr>
                       </thead>
                       <tbody class="text-center">

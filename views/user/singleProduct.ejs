@@ -61,10 +61,15 @@
           <div class="product_slider_img">
             <div id="vertical">
                 
-              <div class="image">
-                <img src="/products/<%=product.image%>" />
+              <div class="image" >
+                <img id="my-image" src ="/products/<%=product.image%>" width="300" height="200" />
               </div>
-              
+               <!-- <div data-thumb="img/product/single-product/product_1.png">
+                <img src="" />
+              </div>
+              <div data-thumb="img/product/single-product/product_1.png">
+               
+              </div> -->
             </div>
           </div>
         </div>
@@ -111,6 +116,11 @@
 
   <!-- jquery plugins here-->
   <!-- jquery -->
+  <script src="path/to/jquery.js"></script>
+<script src="path/to/jquery.zoom.js"></script>
+<script>
+  $("#my-image").zoom();
+</script>
   <script src="js/jquery-1.12.1.min.js"></script>
   <!-- popper js -->
   <script src="js/popper.min.js"></script>

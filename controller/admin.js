@@ -14,29 +14,31 @@ const { find } = require('../models/user/userdata')
 moment().format();
 
 
-
-
-const adminLoginRoutes=(req,res)=>{
+let user = {
+  email: 'anooptk3@gmail.com',
+  passwd: '1'
+}
+module.exports={
+adminLoginRoutes:(req,res)=>{
     res.render('admin/index')
-}
-
-const user = {
-    email: 'anooptk3@gmail.com',
-    passwd: '1'
-}
+},
 
 
-const adminDashboard=(req,res)=>{
+
+
+adminDashboard:(req,res)=>{
     if (req.body.email === user.email && req.body.password === user.passwd) {
         req.session.adminId=req.body.email
         console.log('session created');
         res.redirect('/admin/dashboard')
 
+    }else{
+      res.render('admin/index',{check:"Invalid Credentials"})
     }
-}
+},
 
 
-const adminDashboardData=async(req,res)=>{
+ adminDashboardData:async(req,res)=>{
     
         try {
           // eslint-disable-next-line no-unused-vars
@@ -50,7 +52,7 @@ const adminDashboardData=async(req,res)=>{
           const cancelled = await Orders.find({ orderStatus: 'Cancelled' }).count();
           const cod = await Orders.find({ paymentMethod: 'COD' }).count();
           console.log(cod);
-          const online = await Orders.find({ paymentMethod: 'Online' }).count();
+          const online = await Orders.find({ paymentMethod: 'online' }).count();
           // eslint-disable-next-line arrow-body-style
           const totalAmount = orderData.reduce((accumulator, object) => {
             // eslint-disable-next-line no-return-assign, no-param-reassign
@@ -71,12 +73,12 @@ const adminDashboardData=async(req,res)=>{
         } catch (error) {
           res.redirect('/500');
         }
-      }
+      },
     
     
 
 
-const loadUser=(req,res)=>{
+ loadUser:(req,res)=>{
     try {
         Register.find({}, (err, userdetails) => {
             if (err) {
@@ -88,13 +90,13 @@ const loadUser=(req,res)=>{
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
 
 
 
 
-const updateUser = async (req, res) => {
+ updateUser : async (req, res) => {
     try {
         const check=await Register.findById({_id:req.query.id});
         
@@ -109,28 +111,32 @@ const updateUser = async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
 //  admin logout
-const logoutRouter=(req,res)=>{
+ logoutRouter:(req,res)=>{
+  req.session.destroy()
+  console.log("session deleted");
     res.redirect('/admin')
-}
+},
 
 
 
 
 // category management starts from here
 
-const getAddCategory= (req, res) => {
+ getAddCategory: (req, res) => {
     res.render('admin/addCategory')
-}
-const insertCategory=async (req, res) => {
+},
+ insertCategory:async (req, res) => {
     try {
+      
       let name1=await Category.findOne({name:req.body.name})
-      yourname=name1.name;
-      console.log(name1.name);
-      if (yourname==req.body.name){
-        res.render('admin/addCategory',{check:'Category already exist'})
+      if(name1 && name1.name===req.body.name)
+   
+     
+      {
+        res.redirect('/admin/category?check=Category already exist')
 
       }else{
         let category = new Category({
@@ -138,7 +144,7 @@ const insertCategory=async (req, res) => {
             image: req.file.filename,
           
         })
-        console.log(req.file.filename);
+       
         category.save();
       
 
@@ -147,42 +153,47 @@ const insertCategory=async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
 
-const getCategory= async (req, res) => {
+ getCategory: async (req, res) => {
     try {
         Category.find({}, (err, userdetails) => {
             if (err) {
                 console.log(err);
             } else {
                 console.log(userdetails)
-                res.render('admin/category', { details: userdetails })
+                check=req.query.check
+                res.render('admin/category', { details: userdetails ,check})
             }
         })
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const updateCategory = async (req, res) => {
+updateCategory : async (req, res) => {
     try {
-        const check=await Category.findById({_id:req.query.id});
+      let data = req.body;
+    let categoryId = data.categoryId;
+    
+        const check=await Category.findById({_id:categoryId});
+        console.log(check);
         
         if(check.status==true){
-            await Category.findByIdAndUpdate({ _id: req.query.id }, { $set: { status:false } });
-        console.log(check.status)
+            await Category.updateOne({ _id: categoryId }, { $set: { status:false } });
+            res.json({ success: true });
         }else{
-            await Category.findByIdAndUpdate({ _id: req.query.id }, { $set: { status:true} });
-            console.log(check.status)
+            await Category.updateOne({ _id: categoryId }, { $set: { status:true} });
+            res.json({ update: true });
         }
-        res.redirect('/admin/category');
+      
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const editCategoryPage= async(req,res)=>{
+ editCategoryPage: async(req,res)=>{
     try {
         const id = req.query.id;
         const userData = await Category.findById({ _id: id });
@@ -196,19 +207,33 @@ const editCategoryPage= async(req,res)=>{
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
 
-const editCategory1=async(req,res)=>{
+ editCategory1:async(req,res)=>{
     try {
-        const id=req.query.id;
-        await Category.findByIdAndUpdate({ _id:id }, { $set: { name: req.body.name, image: req.file.filename } });
+      
+        await Category.findByIdAndUpdate({ _id:req.query.id}, 
+          { $set: { name: req.body.name, 
+          } 
+        });
+       
+
+        if(req?.file?.filename){
+          await Category.findByIdAndUpdate({ _id:req.query.id},
+         { $set: {
+
+            image: req.file.filename,
+        }
+    });
+    
+} 
+    res.redirect('/admin/category');
         
-        res.redirect('/admin/category');
     } catch (error) {
-        console.log(error.message);
+        console.log("error");
     }
-}
+},
 
 
 
@@ -216,7 +241,7 @@ const editCategory1=async(req,res)=>{
 
 
 
-const addProduct=async(req,res)=>{
+ addProduct:async(req,res)=>{
     try {
         
                 Category.find({}, (err, categorydetails) => {
@@ -231,9 +256,9 @@ const addProduct=async(req,res)=>{
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const productAdded=(req,res)=>{
+ productAdded:(req,res)=>{
     try {
         let product= new Product({
             name:req.body.name,
@@ -251,8 +276,8 @@ const productAdded=(req,res)=>{
     } catch (error) {
         console.log(error.message);
     }
-}
-const productPage=async (req, res) => {
+},
+productPage:async (req, res) => {
     try {
         Product.find({}, (err, userdetails) => {
             if (err) {
@@ -265,9 +290,9 @@ const productPage=async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const statusProduct = async (req, res) => {
+ statusProduct : async (req, res) => {
     try {
         const check=await Product.findById({_id:req.query.id});
         
@@ -282,8 +307,8 @@ const statusProduct = async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
-const editProduct=async(req,res)=>{
+},
+editProduct:async(req,res)=>{
     try {
         const id = req.query.id;
         const product= await Product.findById({ _id: id });
@@ -296,22 +321,36 @@ const editProduct=async(req,res)=>{
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const updateProduct=async(req,res)=>{
+updateProduct:async(req,res)=>{
+   try{
+
     await Product.findByIdAndUpdate({_id:req.query.id},{$set:{name:req.body.name,
         description:req.body.description,
         category:req.body.category,
-        image:req.file.filename,
+       
         price:req.body.price,
         quantity:req.body.quantity
-    }})
+    }}
+     )
+     if(req?.file?.filename){
+      await Product.findByIdAndUpdate({_id:req.query.id},{$set:{image:req.file.filename,}
+      
+
+      });
+    
+    }
+     
     res.redirect('/admin/products');
+  } catch (error) {
+    console.log("error");
 }
+},
 
 // banner page starts from here
 
-const bannerPage=async (req, res) => {
+ bannerPage: async (req, res) => {
     try {
         Banner.find({}, (err, bannerdetails) => {
             if (err) {
@@ -324,15 +363,15 @@ const bannerPage=async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
-const addBanner=async (req,res)=>{
+},
+ addBanner:async (req,res)=>{
    
         res.render('admin/addBanner')
     
-}
+},
 
 
-const bannerAdded= (req, res) => {
+ bannerAdded: (req, res) => {
     try {
         let banner = new Banner({
             name: req.body.name,
@@ -348,9 +387,9 @@ const bannerAdded= (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const editBannerForm=async(req,res)=>{
+ editBannerForm:async(req,res)=>{
     try {
         const id = req.query.id;
         const userData = await Banner.findById({ _id: id });
@@ -358,26 +397,30 @@ const editBannerForm=async(req,res)=>{
 
             res.render('admin/editBanner', { user: userData });
         } else {
-            res.redirect('/admin/banner');
+            res.redirect('/admin/banners');
         }
 
     } catch (error) {
         console.log(error.message);
     }
-}
-const editedBannerForm=async(req,res)=>{
+},
+ editedBannerForm:async(req,res)=>{
     try {
         const id=req.query.id;
-        await Banner.findByIdAndUpdate({ _id:id }, { $set: { name: req.body.name, image: req.file.filename } });
+        await Banner.findByIdAndUpdate({ _id:id }, 
+          { $set: { name: req.body.name,  } });
+          if(req?.file?.filename){
+            await Banner.findByIdAndUpdate({_id:id},
+              {$set: {image:req.file.filename}})
+          }
         
         res.redirect('/admin/banners');
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-
-const updateSingleBanner=async (req, res) => {
+ updateSingleBanner:async (req, res) => {
     try {
         const check=await Banner.findById({_id:req.query.id});
         
@@ -392,9 +435,9 @@ const updateSingleBanner=async (req, res) => {
     } catch (error) {
         console.log(error.message);
     }
-}
+},
 
-const getCoupons=async(req,res)=>{
+getCoupons:async(req,res)=>{
     
         try {
           coupon.find().then((coupons) => {
@@ -404,17 +447,25 @@ const getCoupons=async(req,res)=>{
           console.error();
           res.render("user/error");
         }
-      }
-const  addCoupon= async(req, res) => {
+      },
+  addCoupon: async(req, res) => {
     try {
+
       const data = req.body;
       const dis = parseInt(data.discount);
       const max = parseInt(data.max);
       const discount = dis / 100;
       nameofcoupen=await coupon.findOne({couponName:data.coupon})
       
+      if(nameofcoupen&&nameofcoupen.couponName===data.coupon){
+        coupon.find().then((coupons) => {
+          res.render("admin/coupen", { coupons,check:'Coupon Already Exist' });
+        });
+        
+      }else{
+      
 
-     
+
 
       coupon
         .create({
@@ -426,14 +477,15 @@ const  addCoupon= async(req, res) => {
         .then(() => {
           res.redirect("/admin/coupons");
         });
+      }
     } catch {
       console.error();
       res.render("user/error");
     }
-  }
+  },
 
 
-  const editCoupon= (req, res) => {
+  editCoupon: (req, res) => {
     try{
     const id = req.params.id;
     const data = req.body;
@@ -454,18 +506,18 @@ const  addCoupon= async(req, res) => {
       console.error();
       res.render('user/error');
     }
-  }
-  const deleteCoupon=(req,res)=>{
+  },
+ deleteCoupon:(req,res)=>{
     const id=req.params.id;
     coupon.deleteOne({_id:id}).then(()=>{
       res.redirect('/admin/coupons');
     })
-  }
+  },
 
 
 //   order management 
 
-const getOrders =async (req, res) => {
+ getOrders :async (req, res) => {
     try {
       Orders
         .aggregate([
@@ -505,9 +557,9 @@ const getOrders =async (req, res) => {
       console.error();
       res.render("user/error");
     }
-  }
+  },
 
-const changeOrderStatus = (req, res) => {
+changeOrderStatus :(req, res) => {
   try {
     const { orderID, paymentStatus, orderStatus } = req.body;
     Orders.updateOne(
@@ -523,9 +575,9 @@ const changeOrderStatus = (req, res) => {
   } catch (error) {
     res.redirect('/500');
   }
-};
+},
 
-const orderCompeleted = (req, res) => {
+ orderCompeleted : (req, res) => {
   try {
     const { orderID } = req.body;
     Orders.updateOne(
@@ -537,9 +589,9 @@ const orderCompeleted = (req, res) => {
   } catch (error) {
     res.redirect('/500');
   }
-};
+},
 
-const orderCancel = (req, res) => {
+orderCancel : (req, res) => {
   try {
     const { orderID } = req.body;
     Orders.updateOne(
@@ -551,9 +603,9 @@ const orderCancel = (req, res) => {
   } catch (error) {
     res.redirect('/500');
   }
-};
+},
 
-const getSalesReport = async (req, res) => {
+ getSalesReport :async (req, res) => {
   try {
     const today = moment().startOf('day');
     const endtoday = moment().endOf('day');
@@ -661,44 +713,9 @@ const getSalesReport = async (req, res) => {
   } catch (error) {
     res.redirect('/500');
   }
-};
+},
 
 
 
 
-
-module.exports={
-    adminLoginRoutes,
-    updateUser,
-    adminDashboard,
-    loadUser,
-    logoutRouter,
-    addProduct,
-    productAdded,
-    getAddCategory
-    ,getCategory,
-    insertCategory,
-    updateCategory,
-    editCategory1,
-    editCategoryPage,
-    statusProduct,
-    productPage,
-    editProduct,
-    updateProduct,
-    adminDashboardData,
-    bannerPage,
-    addBanner,
-    bannerAdded,
-    editBannerForm,
-    editedBannerForm,
-    updateSingleBanner,
-    getCoupons,
-    addCoupon,
-    editCoupon,
-    deleteCoupon,
-    getOrders,
-    changeOrderStatus,
-    orderCompeleted,
-    orderCancel,
-    getSalesReport,
 }

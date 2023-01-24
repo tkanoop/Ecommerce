@@ -10,7 +10,7 @@ module.exports = {
       if(!req.session.adminId){
         next()
       }else{
-        res.redirect('/admin')
+        res.redirect('admin/dashboard')
       }
 
     },

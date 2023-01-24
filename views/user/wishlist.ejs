@@ -26,6 +26,10 @@
     <link rel="stylesheet" href="css/slick.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
 </head>
 
 <body>
@@ -38,6 +42,7 @@
 
     <!--================Home Banner Area =================-->
     <!-- breadcrumb start-->
+    
     <section class="breadcrumb breadcrumb_bg">
         <div class="container">
             <div class="row justify-content-start">
@@ -52,6 +57,14 @@
             </div>
         </div>
     </section>
+    <% if(wishlistcount===0){ %>
+        <center class="col-xl-12 col-md-6 col-sm-4 pt-5">
+          <h1 style="color: rgb(26, 208, 208)">Sorry your wishlist is empty</h1>
+          <img class="image-fluid col-xl-12 col-md-6 col-sm-4 mt-5"
+            src="https://alphapharmaexhibitions.com/images/cartempty1.png" alt="" style="width: 14rem" /><br />
+          <a class="btn btn-succes" href="/" style="margin-top: 17px; color: green; border: solid green">SHOP NOW</a>
+        </center>
+        <% }else{ %>
     <!-- breadcrumb start-->
 
     <!--================Cart Area =================-->
@@ -99,7 +112,12 @@
                                             class="btn btn-black btn-sm  "><i class="fa-solid fa-trash"></i></a></td>
                                     
                                     <td>
-                                        <button id="cartButton" class="btn btn-dark btn-addtocart " style="width: 140px;" onclick="addToCart('<%=product.productId%>')"> Add to Cart</button>
+                                        <div class="">
+                                            <button class="btn btn-outline-dark"
+                                              onclick="addToCartWish('<%= product.wishlistdata._id %>')">
+                                              Add to Cart
+                                            </button>
+                                            <p id="exist" class="text-danger"></p>
 
 
                                     </td>
@@ -117,6 +135,7 @@
                 </div>
             </div>
     </section>
+    <% } %>
     <!--================End Cart Area =================-->
 
     <!--::footer_part start::-->
@@ -124,35 +143,34 @@
     <!--::footer_part end::-->
 
     <!-- jquery plugins here-->
-    <script src="js/jquery-1.12.1.min.js"></script>
-    <!-- popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- easing js -->
-    <script src="js/jquery.magnific-popup.js"></script>
-    <!-- swiper js -->
-    <script src="js/swiper.min.js"></script>
-    <!-- swiper js -->
-    <script src="js/masonry.pkgd.js"></script>
-    <!-- particles js -->
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <!-- slick js -->
-    <script src="js/slick.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
-    <script src="js/waypoints.min.js"></script>
-    <script src="js/contact.js"></script>
-    <script src="js/jquery.ajaxchimp.min.js"></script>
-    <script src="js/jquery.form.js"></script>
-    <script src="js/jquery.validate.min.js"></script>
-    <script src="js/mail-script.js"></script>
-    <script src="js/stellar.js"></script>
-    <script src="js/price_rangs.js"></script>
-    <!-- custom js -->
-    <script src="js/custom.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script src="/public/ajaxjs/ajax.js"></script>
+    <script src="/public/ajaxjs/ajax.js"></script>
+<script src="js/jquery-1.12.1.min.js"></script>
+<!-- popper js -->
+<script src="js/popper.min.js"></script>
+<!-- bootstrap js -->
+<script src="js/bootstrap.min.js"></script>
+<!-- easing js -->
+<script src="js/jquery.magnific-popup.js"></script>
+<!-- swiper js -->
+<script src="js/swiper.min.js"></script>
+<!-- swiper js -->
+<script src="js/masonry.pkgd.js"></script>
+<!-- particles js -->
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<!-- slick js -->
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/stellar.js"></script>
+<script src="js/price_rangs.js"></script>
+<!-- custom js -->
+<script src="js/custom.js"></script>
 </body>
 
 </html>

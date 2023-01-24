@@ -93,15 +93,13 @@
                             <% addressdetails.forEach(function(item){%>
                             <div class="add d-flex justify-content-end ">
                     
-                                <a class="addaddress " href='/editAddress?id=<%item.ID%>'>
+                                <a class="addaddress " href='/editAddress?id=<%= item._id%>'>
                                     <button type="button" class="btn-sm  btn-warning d-flex justify-content-end">Edit Address</button>
                                 </a>
                            
                             
                     
-                                <a class="addaddress " href='/deleteAddress?id=<%=item.ID%>'>
-                                    <button type="button"  onclick="return confirm('Are you sure you want to delete ')" class="btn-sm btn-danger d-flex justify-content-end mx-2">Delete Address</button>
-                                </a>
+                                 <button type="button" class="btn-sm btn-danger  d-flex justify-content-end mx-2" onclick="remove('<%=item._id%>')" >Delete</button>
                             </div>
                            
 
@@ -174,18 +172,11 @@
 
 
                            
-                            <div class="add d-flex justify-content-start ">
+                           
 
 
-                            <a class="default address " href='/'>
-                                <button type="button" class="btn-sm btn-success d-flex justify-content-end">Set As default</button>
-                            </a>
 
-                            </div>
-                            <br/>
-                            <br/>  <br/>
-                            <br/>
-
+                            
 
                         </div>
                         <% }) %>
@@ -194,11 +185,29 @@
                     </div>
                 </div>
             </div>
+            </form>
            
 
         </form>
     </div>
- 
+    
+ <script>
+    function remove(id){
+   console.log(id);
+   $.ajax({
+      url:'/deleteAddress',
+      method:'delete', 
+      data:{
+         addressId : id
+      },
+      success:(res)=>{
+         if(res.success){
+           location.reload()
+         }
+      }
+   })
+}
+ </script>
 
 
 

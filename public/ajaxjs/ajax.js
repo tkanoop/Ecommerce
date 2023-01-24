@@ -13,7 +13,7 @@ function changeQuantity(cartId, productId, count) {
     method: 'post',
     success:(response)=>{
       if (response.status) {
-        location.reload()
+        $("#reload").load(location.href + " #reload");
       }
       if (response.stock) {
         Swal.fire({
@@ -155,7 +155,15 @@ function addToCartWish(proId) {
     url: "/addToCart/" + proId,
     method: "get",
     success: (response) => {
-      if (response.status) {
+      if (response.productExist) {
+        Swal.fire({
+          title: "Product exist in cart!",
+          icon: "error",
+          confirmButtonText: "continue",
+        }).then(function () {
+          location.reload()
+        });
+      }if (response.status) {
         let count = $("#cartCount").html();
         count = parseInt(count) + 1;
         $("#cartCount").html(count);
@@ -167,6 +175,7 @@ function addToCartWish(proId) {
           location.reload();
         });
       }
+      
 
   
     },

@@ -39,14 +39,16 @@ router.get('/singleProduct',user.singleProduct)
 // code for loading user profile
 router.get('/userProfile',user.userProfileView)
 router.get('/editUserProfile',sessionMV.verifyLoginUser,user.editUserProfile)
-router.post('/editUserProfile',user.userProfileEdited)
+router.post('/newPassword',sessionMV.verifyLoginUser,user.userProfileEdited)
 router.get('/address',sessionMV.verifyLoginUser,user.addressPage)
 router.get('/addAddress',sessionMV.verifyLoginUser,user.addAddressPage)
 router.post('/addressAdded',sessionMV.verifyLoginUser,user.addressAdded)
-router.get('/deleteAddress',sessionMV.verifyLoginUser,user.deleteAddress)
+router.delete('/deleteAddress',sessionMV.verifyLoginUser,user.deleteAddress)
+router.get('/editAddress',sessionMV.verifyLoginUser,user.editAddressPage)
+router.post('/editAddress',sessionMV.verifyLoginUser,user.editedAddressPage)
 router.get('/orders',sessionMV.verifyLoginUser,user.viewOrder)
 router.get('/viewOrderProducts/:id',sessionMV.verifyLoginUser,user.viewOrderProduct)
-
+router.get("/cancelOrder/:id",sessionMV.verifyLoginUser,user.cancelOrder);
 
 
 
@@ -67,11 +69,13 @@ router.post('/placeOrder',sessionMV.verifyLoginUser,user.postCheckout)
 router.get("/pay",sessionMV.verifyLoginUser,user.getPay)
 router.get('/success',sessionMV.verifyLoginUser,user.getSuccess)
 router.get('/cancel',sessionMV.verifyLoginUser,user.getCancel)
+router.get("/orderSuccess",sessionMV.verifyLoginUser, user.orderSuccess );
+
 
 router.post("/checkCoupon", sessionMV.verifyLoginUser, user.checkCoupon);
 
-// order success
-router.get("/orderSuccess", user.orderSuccess );
+
+
 
 module.exports = router;
 

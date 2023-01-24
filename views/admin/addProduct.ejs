@@ -86,7 +86,7 @@
 
                                         <div class="form-outline mt-3">
                                             <label class="form-label" for="form3Example1">Image</label><br>
-                                            <input type="file" name="image" class="form-control" />
+                                            <input type="file" name="image" id="file" onchange="return fileValidation()" class="form-control"accept="image/*" required />
 
                                         </div>
                                         <div class="form-outline mt-3">
@@ -157,6 +157,24 @@
     $(document).ready(function () {
         $("#example").DataTable();
     });
+</script>
+<script>
+    function fileValidation() {
+        var fileInput =
+            document.getElementById('file');
+        
+        var filePath = fileInput.value;
+    
+        // Allowing file type
+        var allowedExtensions =
+                /(\.jpg|\.jpeg|\.png)$/i;
+        
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Please select image file ');
+            fileInput.value = '';
+            return false;
+        }
+    }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
