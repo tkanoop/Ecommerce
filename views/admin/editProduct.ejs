@@ -88,8 +88,8 @@
 
                                         <div class="form-outline mt-3">
                                             <label class="form-label" for="form3Example1">Image</label><br>
-                                            <img src="/products/<%=product.image%>" alt=" image" width="200px">
-                                            <input type="file" name="image" class="form-control" value="/products/<%=product.image%>" />
+                                            <img src="/products/<%=product.image[0].filename%>" alt=" image" width="200px">
+                                            <input type="file" name="image" class="form-control" value="/products/<%=product.image[0].filename%>,<%=product.image[1].filename%>,<%=product.image[2].filename%> " multiple />
 
                                         </div>
                                         <div class="form-outline mt-3">

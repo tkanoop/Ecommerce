@@ -5,7 +5,12 @@ const adminproductSchema= new Schema({
     name:String,
     description:String,
     category:String,
-    image:String,
+
+
+    image:{
+      type:Array
+
+    },
     
     
     status:{

@@ -86,7 +86,7 @@
 
                                         <div class="form-outline mt-3">
                                             <label class="form-label" for="form3Example1">Image</label><br>
-                                            <input type="file" name="image" id="file" onchange="return fileValidation()" class="form-control"accept="image/*" required />
+                                            <input type="file" name="image" id="file" onchange=" fileValidation()" class="form-control"accept="image/*" required multiple/>
 
                                         </div>
                                         <div class="form-outline mt-3">
@@ -167,7 +167,7 @@
     
         // Allowing file type
         var allowedExtensions =
-                /(\.jpg|\.jpeg|\.png)$/i;
+                /(\.jpg|\.jpeg|\.png|\.webp)$/i;
         
         if (!allowedExtensions.exec(filePath)) {
             alert('Please select image file ');

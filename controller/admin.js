@@ -71,7 +71,7 @@ adminDashboard:(req,res)=>{
             online,
           });
         } catch (error) {
-          res.redirect('/500');
+          res.redirect('/admin/error');
         }
       },
     
@@ -88,11 +88,14 @@ adminDashboard:(req,res)=>{
             }
         })
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
+        
     }
 },
 
-
+errorPage: (req,res)=>{
+  res.render('admin/error')
+},
 
 
 
@@ -109,7 +112,7 @@ adminDashboard:(req,res)=>{
         }
         res.redirect('/admin/adminhome');
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -151,7 +154,7 @@ adminDashboard:(req,res)=>{
         res.redirect('/admin/category');
       }
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -168,7 +171,7 @@ adminDashboard:(req,res)=>{
             }
         })
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -189,7 +192,7 @@ updateCategory : async (req, res) => {
         }
       
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -219,11 +222,11 @@ updateCategory : async (req, res) => {
         });
        
 
-        if(req?.file?.filename){
+        if(req?.files){
           await Category.findByIdAndUpdate({ _id:req.query.id},
          { $set: {
 
-            image: req.file.filename,
+            image: req.files,
         }
     });
     
@@ -231,7 +234,7 @@ updateCategory : async (req, res) => {
     res.redirect('/admin/category');
         
     } catch (error) {
-        console.log("error");
+      res.redirect('/admin/error');
     }
 },
 
@@ -254,7 +257,7 @@ updateCategory : async (req, res) => {
                     }
                 })
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -264,7 +267,7 @@ updateCategory : async (req, res) => {
             name:req.body.name,
             description:req.body.description,
             category:req.body.category,
-            image:req.file.filename,
+            image:req.files,
             price:req.body.price,
             quantity:req.body.quantity,
         })
@@ -274,7 +277,7 @@ updateCategory : async (req, res) => {
         console.log(product);
 
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 productPage:async (req, res) => {
@@ -288,7 +291,7 @@ productPage:async (req, res) => {
             }
         })
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -305,7 +308,7 @@ productPage:async (req, res) => {
         }
         res.redirect('/admin/products');
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 editProduct:async(req,res)=>{
@@ -319,7 +322,7 @@ editProduct:async(req,res)=>{
             res.redirect('/admin/products');
         }
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -344,7 +347,7 @@ updateProduct:async(req,res)=>{
      
     res.redirect('/admin/products');
   } catch (error) {
-    console.log("error");
+    res.redirect('/admin/error');
 }
 },
 
@@ -361,7 +364,7 @@ updateProduct:async(req,res)=>{
             }
         })
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
  addBanner:async (req,res)=>{
@@ -385,7 +388,7 @@ updateProduct:async(req,res)=>{
 
         res.redirect('/admin/banners');
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -401,7 +404,7 @@ updateProduct:async(req,res)=>{
         }
 
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
  editedBannerForm:async(req,res)=>{
@@ -416,7 +419,7 @@ updateProduct:async(req,res)=>{
         
         res.redirect('/admin/banners');
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -433,7 +436,7 @@ updateProduct:async(req,res)=>{
         }
         res.redirect('/admin/banners');
     } catch (error) {
-        console.log(error.message);
+      res.redirect('/admin/error');
     }
 },
 
@@ -445,7 +448,7 @@ getCoupons:async(req,res)=>{
           });
         } catch {
           console.error();
-          res.render("user/error");
+          res.redirect('/admin/error');
         }
       },
   addCoupon: async(req, res) => {
@@ -480,7 +483,7 @@ getCoupons:async(req,res)=>{
       }
     } catch {
       console.error();
-      res.render("user/error");
+      res.redirect('/admin/error');
     }
   },
 
@@ -504,7 +507,7 @@ getCoupons:async(req,res)=>{
       });
     }catch{
       console.error();
-      res.render('user/error');
+      res.redirect('/admin/error');
     }
   },
  deleteCoupon:(req,res)=>{
@@ -555,7 +558,7 @@ getCoupons:async(req,res)=>{
         });
     } catch {
       console.error();
-      res.render("user/error");
+      res.redirect('/admin/error');
     }
   },
 
@@ -573,7 +576,7 @@ changeOrderStatus :(req, res) => {
       res.redirect('/500');
     });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect('/admin/error');
   }
 },
 
@@ -587,7 +590,7 @@ changeOrderStatus :(req, res) => {
       res.send('done');
     });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect('/admin/error');
   }
 },
 
@@ -601,7 +604,7 @@ orderCancel : (req, res) => {
       res.send('done');
     });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect('/admin/error');
   }
 },
 
@@ -711,7 +714,7 @@ orderCancel : (req, res) => {
     ]);
     res.render('admin/salesReport', { today: daliyReport, month: monthReport, year: yearReport });
   } catch (error) {
-    res.redirect('/500');
+    res.redirect('/admin/error');
   }
 },
 

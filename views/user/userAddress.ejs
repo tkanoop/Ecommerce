@@ -91,7 +91,8 @@
 
 
                             <% addressdetails.forEach(function(item){%>
-                            <div class="add d-flex justify-content-end ">
+                                <div id="deleteActions<%= item._id%>">
+                            <div class="add d-flex justify-content-end "  >
                     
                                 <a class="addaddress " href='/editAddress?id=<%= item._id%>'>
                                     <button type="button" class="btn-sm  btn-warning d-flex justify-content-end">Edit Address</button>
@@ -176,7 +177,7 @@
 
 
 
-                            
+                                </div>
 
                         </div>
                         <% }) %>
@@ -202,7 +203,7 @@
       },
       success:(res)=>{
          if(res.success){
-           location.reload()
+            $('#deleteActions' + id).load(location.href + ' #deleteActions' + id)
          }
       }
    })

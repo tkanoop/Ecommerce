@@ -152,7 +152,7 @@
                                 <% details.forEach(function(product){ %>
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="single_product_item">
-                                            <a class="products" href="/singleProduct?id=<%= product._id%>"><img src="/products/<%=product.image%>"
+                                            <a class="products" href="/singleProduct?id=<%= product._id%>"><img src="/products/<%=product.image[0].filename%>"
                                                     alt="" height="200px" ></a>
                                             <div class="single_product_text">
                                                 <h4>
@@ -199,7 +199,7 @@
                     <div class="best_product_slider owl-carousel">
                         <% details.forEach(function(product){ %>
                         <div class="single_product_item">
-                            <img src="/products/<%=product.image%>" alt="">
+                            <img src="/products/<%=product.image[0].filename%>" alt="">
                             <div class="single_product_text">
                                 <h4>  <%=product.name%></h4>
                                 <h3> RS <%=product.price%></h3>

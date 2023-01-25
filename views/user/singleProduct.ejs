@@ -1,32 +1,37 @@
+
 <!doctype html>
 <html lang="zxx">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Index</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>aranoz</title>
+  <link rel="icon" href="img/favicon.png">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- animate CSS -->
+  <link rel="stylesheet" href="css/animate.css">
+  <!-- owl carousel CSS -->
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link rel="stylesheet" href="css/lightslider.min.css">
+  <!-- font awesome CSS -->
+  <link rel="stylesheet" href="css/all.css">
+  <!-- flaticon CSS -->
+  <link rel="stylesheet" href="css/flaticon.css">
+  <link rel="stylesheet" href="css/themify-icons.css">
+  <!-- font awesome CSS -->
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <!-- style CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+ 
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- animate CSS -->
-    <link rel="stylesheet" href="css/animate.css">
-    <!-- owl carousel CSS -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <!-- font awesome CSS -->
-    <link rel="stylesheet" href="css/all.css">
-    <!-- flaticon CSS -->
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/themify-icons.css">
-    <!-- font awesome CSS -->
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <!-- swiper CSS -->
-    <link rel="stylesheet" href="css/slick.css">
-    <!-- style CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
+
+   <!--::header part start::-->
 
 <body>
     <!--::header part start::-->
@@ -55,21 +60,24 @@
 
   <!--================Single Product Area =================-->
   <div class="product_image_area section_padding">
-    <div class="container">
+    <div class="container ">
       <div class="row s_product_inner justify-content-between">
-        <div class="col-lg-7 col-xl-7">
+        <div class="col-lg-7 col-xl-7 ">
           <div class="product_slider_img">
             <div id="vertical">
                 
-              <div class="image" >
-                <img id="my-image" src ="/products/<%=product.image%>" width="300" height="200" />
+         <div  data-thumb="/products/<%=product.image[0].filename%>" id="img-container" >
+                <img  src ="/products/<%=product.image[0].filename%>" width="300" height="200" />
               </div>
-               <!-- <div data-thumb="img/product/single-product/product_1.png">
-                <img src="" />
+              <div  data-thumb="/products/<%=product.image[1].filename%>" style="height: 100px;"  >
+                <img src="/products/<%=product.image[1].filename%>"  width="300" height="200"/>
               </div>
-              <div data-thumb="img/product/single-product/product_1.png">
-               
-              </div> -->
+              <div  data-thumb="/products/<%=product.image[2].filename%>"   width="100" height="80">
+                <img src="/products/<%=product.image[2].filename%>"  width="300" height="200" />
+              </div>
+             
+             
+             
             </div>
           </div>
         </div>
@@ -116,11 +124,18 @@
 
   <!-- jquery plugins here-->
   <!-- jquery -->
-  <script src="path/to/jquery.js"></script>
-<script src="path/to/jquery.zoom.js"></script>
-<script>
-  $("#my-image").zoom();
-</script>
+  <script>
+    var options = {
+  
+        width: 350,
+        zoomWidth: 350,
+        
+        offset: {vertical:250, horizontal: -350}
+    };
+    new ImageZoom(document.getElementById("img-container"), options);
+     
+    </script>
+  <script src="/public/ajaxjs/ajax.js"></script>
   <script src="js/jquery-1.12.1.min.js"></script>
   <!-- popper js -->
   <script src="js/popper.min.js"></script>
@@ -149,8 +164,3 @@
   <!-- custom js -->
   <script src="js/theme.js"></script>
   <script src="js/custom.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script src="/public/ajaxjs/ajax.js"></script>
-</body>
-
-</html>

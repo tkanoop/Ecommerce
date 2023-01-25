@@ -87,7 +87,7 @@
                   <td>
                     <div class="media">
                       <div class="d-flex">
-                        <img src="/products/<%=product.productDetail.image%>" alt="" width="100px" height="auto" />
+                        <img src="/products/<%=product.productDetail.image[0].filename%>" alt="" width="100px" height="auto" />
                       </div>
                       <div class="media-body">
                         <p>
@@ -102,7 +102,7 @@
                     </h5>
                   </td>
                   <td>
-                    <div class="product_count d-flex align-items-center" id="">
+                    <div class="product_count d-flex align-items-center">
                       <div class="d-flex">
                         <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
                           <% if(product.productQuantity==1) {%>
@@ -125,6 +125,7 @@
                                 </button>
                         </div>
                       </div>
+                    </div>
 
 
                   </td>

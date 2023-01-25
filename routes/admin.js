@@ -17,6 +17,8 @@ router.get('/dashboard',sessionMV.verifyLoginAdmin,admin.adminDashboardData)
 router.get('/updateUser',sessionMV.verifyLoginAdmin, admin.updateUser);
 router.get('/logout',sessionMV.verifyLoginAdmin,admin.logoutRouter)
 
+router.get('/error',admin.errorPage)
+
 // category management starts from here
 router.get('/addCategory',sessionMV.verifyLoginAdmin,admin.getAddCategory)
 router.get('/category',sessionMV.verifyLoginAdmin,admin.getCategory)
@@ -29,10 +31,10 @@ router.post('/editCategoryForm',sessionMV.verifyLoginAdmin, upload.single('image
 
 router.get('/products',sessionMV.verifyLoginAdmin,admin.productPage)
 router.get('/addProductPage',sessionMV.verifyLoginAdmin,admin.addProduct)
-router.post('/add-product',sessionMV.verifyLoginAdmin,product.single('image'),admin.productAdded)
+router.post('/add-product',sessionMV.verifyLoginAdmin,product.array('image',3),admin.productAdded)
 router.get('/statusProduct',sessionMV.verifyLoginAdmin,admin.statusProduct)
 router.get('/editProduct',sessionMV.verifyLoginAdmin, admin.editProduct)
-router.post('/editProduct',sessionMV.verifyLoginAdmin, product.single('image'), admin.updateProduct);
+router.post('/editProduct',sessionMV.verifyLoginAdmin, product.array('image',3), admin.updateProduct);
 
 // banne management starts from here
 router.get('/banners',sessionMV.verifyLoginAdmin,admin.bannerPage)
